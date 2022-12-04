@@ -145,7 +145,8 @@ struct StableDiffusionSample: ParsableCommand {
     }
 
     func imageName(_ sample: Int, step: Int? = nil) -> String {
-        var name = prompt.replacingOccurrences(of: " ", with: "_")
+        var timestamp = Date().currentTimeMillis()
+        var name = String(prompt.replacingOccurrences(of: " ", with: "_").prefix(8) + "_" + String(timestamp))
         if imageCount != 1 {
             name += ".\(sample)"
         }
@@ -163,6 +164,12 @@ struct StableDiffusionSample: ParsableCommand {
 
     func log(_ str: String, term: String = "") {
         print(str, terminator: term)
+    }
+}
+
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
     }
 }
 
